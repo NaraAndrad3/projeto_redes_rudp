@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+logs/*.log
+logs/*.csv
+captures/*.pcap
+captures/*.csv
+
+data/input/*
+data/output/*
+
+!data/input/.gitkeep
+!data/output/.gitkeep
