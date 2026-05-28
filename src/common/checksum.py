@@ -10,7 +10,7 @@ def gera_checksum(data: bytes) -> str:
     Returns:
         str: O checksum gerado.
     """
-    return hashlib.sha256(data).hexdigest()
+    return hashlib.sha256(data).digest()
 
 
 def verifica_checksum(data, checksum):
