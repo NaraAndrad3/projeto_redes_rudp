@@ -3,6 +3,8 @@ from checksum import gera_checksum, verifica_checksum
 
 HEADER_FORMAT = "!I32sI"
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
+ACK_FORMAT = "!I"
+ACK_SIZE = struct.calcsize(ACK_FORMAT)
 
 class Packet:
     """
@@ -44,10 +46,37 @@ class Packet:
         if not verifica_checksum(payload, checksum):
             raise ValueError("Checksum inválido")
         
-        packet = cls(sequence_number, payload)
+        packet = cls(sequence_number, payload) # Criar o pacote usando o construtor para calcular o checksum e tamanho do payload
         packet.checksum = checksum  # Manter o checksum original para comparação futura
         packet.payload_size = payload_size  # Manter o tamanho real do payload
         
         return packet
+
+class ACK:
+    """
+    Representa um ACK do protocolo R-UDP. O ack informa o remetente que um pacote foi recebido com sucesso,
+    usando o número de sequência do pacote ACK para identificar qual pacote foi reconhecido.
+
+    Campos:
+    - ack_number: número de sequência do pacote ACK
+    """
+    
+    def __init__(self, ack_number: int):
+        self.ack_number = ack_number
+        
+    def to_bytes(self) -> bytes:
+        """ Converte o ACK para bytes para envio pela rede. 
+        O formato é composto apenas pelo número de sequência.
+        """
+        return struct.pack(ACK_FORMAT, self.ack_number)
+    
+    @classmethod
+    def from_bytes(cls, data: bytes):
+        """ Converte bytes recebidos da rede para um objeto ACK. 
+        O formato é composto apenas pelo número de sequência.
+        """
+        ack_number = struct.unpack(ACK_FORMAT, data[:ACK_SIZE])[0]
+        
+        return cls(ack_number)
 
 
