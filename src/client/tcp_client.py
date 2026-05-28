@@ -1,13 +1,8 @@
 import os
 import socket
 import time
-
-from src.common.config import (
-    SERVER_DOCKER_NAME,
-    SERVER_PORT_TCP,
-    CHUNK_SIZE,
-    INPUT_DIR
-)
+import struct
+from src.common.config import SERVER_DOCKER_NAME, SERVER_PORT_TCP, CHUNK_SIZE, INPUT_DIR, CUSTOM_AUTH
 
 
 def start_tcp_client(filename: str):
@@ -17,16 +12,25 @@ def start_tcp_client(filename: str):
     sendall() do socket TCP.,
     """
 
-    client_socket = socket.socket(
-        socket.AF_INET,
-        socket.SOCK_STREAM
-    )
+    client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    
     # Conectar ao servidor usando o nome do container e a porta TCP definida nas configurações
-    client_socket.connect(
-        (SERVER_DOCKER_NAME, SERVER_PORT_TCP)
-    )
+    client_socket.connect((SERVER_DOCKER_NAME, SERVER_PORT_TCP))
 
     filepath = os.path.join(INPUT_DIR, filename)
+    
+    filename_bytes = filename.encode('utf-8')
+    auth_bytes = CUSTOM_AUTH.encode('utf-8')
+    file_size = os.path.getsize(filepath)
+    
+    header = struct.pack(
+        '!IIQ', len(filename_bytes), len(auth_bytes), file_size
+    )
+    
+    client_socket.sendall(header)
+    client_socket.sendall(filename_bytes)
+    client_socket.sendall(auth_bytes)
+    
     # Medir o tempo de envio do arquivo para calcular o throughput
     start_time = time.time()
 
@@ -51,6 +55,7 @@ def start_tcp_client(filename: str):
     throughput = total_bytes_sent / elapsed_time
 
     print(f"[TCP CLIENT] Arquivo enviado com sucesso.")
+    print(f"[TCP CLIENT] Arquivo: {filename}")
     print(f"[TCP CLIENT] Bytes enviados: {total_bytes_sent}")
     print(f"[TCP CLIENT] Tempo total: {elapsed_time:.4f} s")
     print(f"[TCP CLIENT] Throughput: {throughput:.2f} B/s")
