@@ -1,6 +1,6 @@
-import os, socket, time
-from src.common.config import SERVER_DOCKER_NAME, SERVER_PORT_UDP, BUFFER_SIZE, CHUNK_SIZE, TIMEOUT, MAX_RETRIES, INPUT_DIR, TIMEOUT, WINDOW_SIZE
-from src.common.packet import Packet, ACK, PACKET_TYPE_DATA
+import os, socket, time, json
+from src.common.config import SERVER_DOCKER_NAME, SERVER_PORT_UDP, CHUNK_SIZE, TIMEOUT, MAX_RETRIES, INPUT_DIR, TIMEOUT, WINDOW_SIZE, CUSTOM_AUTH
+from src.common.packet import Packet, ACK, PACKET_TYPE_DATA, PACKET_TYPE_METADATA, PACKET_TYPE_END
 
 def create_packets(file_path: str):
     
