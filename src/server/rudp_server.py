@@ -16,10 +16,14 @@ def start_udp_server():
     
     with open(output_file_path, "wb") as file:
         while True: 
-            packet_data, client_address = server_socket.recvfrom(BUFFER_SIZE)
-            if not packet_data == b'END':
+            packet_data, client_address = server_socket.recvfrom(65535)
+            if packet_data == b'END':
                 print("[R-UDP SERVER] Fim da transmissão recebido.")
                 break
+                print(
+                f"[R-UDP SERVER] Datagrama recebido: "
+                f"{len(packet_data)} bytes de {client_address}"
+            )
             try:
                 packet = Packet.from_bytes(packet_data)
                 if packet.sequence_number == expected_sequence_number:
@@ -37,9 +41,8 @@ def start_udp_server():
                     )
                 ack = ACK(last_ack_number)
                 server_socket.sendto(ack.to_bytes(), client_address)
-            except ValueError:
-                print("[R-UDP SERVER] Pacote corrompido descartado.")
-                
+            except ValueError as error:
+                print(f"[R-UDP SERVER] Erro ao processar pacote: {error}")
                 ack = ACK(last_ack_number)
                 server_socket.sendto(ack.to_bytes(), client_address)
     
