@@ -10,7 +10,7 @@ PACKET_TYPE_END = 3
 HEADER_FORMAT = "!BI32sI"
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
 
-ACK_FORMAT = "!I"
+ACK_FORMAT = "!i"
 ACK_SIZE = struct.calcsize(ACK_FORMAT)
 
 

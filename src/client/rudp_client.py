@@ -27,6 +27,20 @@ def start_udp_client(filename: str):
     file_path = os.path.join(INPUT_DIR, filename)
     packets = create_packets(file_path)
     
+    metadata = {
+    "filename": filename,
+    "file_size": os.path.getsize(file_path),
+    "custom_auth": CUSTOM_AUTH
+}
+
+    metadata_payload = json.dumps(metadata).encode("utf-8")
+
+    metadata_packet = Packet(
+        packet_type=PACKET_TYPE_METADATA,
+        sequence_number=0,
+        payload=metadata_payload
+    )
+    
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     client_socket.settimeout(TIMEOUT)
     
@@ -38,6 +52,27 @@ def start_udp_client(filename: str):
     total_retries = 0
     
     start_time = time.time()
+    
+    metadata_ack_received = False
+
+    while not metadata_ack_received:
+        client_socket.sendto(
+            metadata_packet.to_bytes(),
+            server_address
+        )
+
+        print("[R-UDP CLIENT] Pacote de metadados enviado.")
+
+        try:
+            ack_data, _ = client_socket.recvfrom(1024)
+            ack = ACK.from_bytes(ack_data)
+
+            if ack.ack_number == -1:
+                metadata_ack_received = True
+                print("[R-UDP CLIENT] ACK de metadados recebido.")
+
+        except socket.timeout:
+            print("[R-UDP CLIENT] Timeout nos metadados. Reenviando...")
     
     while base < len(packets):
         while next_seq_num < base + WINDOW_SIZE and next_seq_num < len(packets):
@@ -69,7 +104,16 @@ def start_udp_client(filename: str):
             total_retries += next_seq_num - base
             next_seq_num = base
             
-    client_socket.sendto(b'END', server_address)
+    end_packet = Packet(
+    packet_type=PACKET_TYPE_END,
+    sequence_number=base,
+    payload=b""
+)
+
+    client_socket.sendto(
+        end_packet.to_bytes(),
+        server_address
+    )
     end_time = time.time()
     elapsed_time = end_time - start_time
     total_bytes_sent = os.path.getsize(file_path)
