@@ -1,0 +1,22 @@
+Cenário A 
+    - TCP:
+        [TCP CLIENT] Bytes enviados: 29
+        [TCP CLIENT] Tempo total: 0.0056 s
+        [TCP CLIENT] Throughput: 5169.57 B/s
+    
+    -RUDP:
+        [R-UDP CLIENT] Pacote de metadados enviado.
+        [R-UDP CLIENT] ACK de metadados recebido.
+        [R-UDP CLIENT] Pacote 0 enviado.
+        [R-UDP CLIENT] ACK 0 recebido.
+        [R-UDP CLIENT] Transmissão finalizada.
+        [R-UDP CLIENT] Arquivo: test.txt
+        [R-UDP CLIENT] Bytes úteis enviados: 29
+        [R-UDP CLIENT] Tempo total: 0.0290 s
+        [R-UDP CLIENT] Throughput útil: 999.22 B/s
+        [R-UDP CLIENT] Retransmissões: 0
+
+
+
+
+
