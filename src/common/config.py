@@ -40,7 +40,7 @@ MAX_RETRIES = 20
 """
     Configurações de autenticação personalizada. O valor de CUSTOM_AUTH é usado como um token de autenticação
 """
-CUSTOM_AUTH = "MATRICULA_NARA_RAQUEL_DIAS_ANDRADE"
+CUSTOM_AUTH = "20261005127_NARA_RAQUEL_DIAS_ANDRADE"
 
 # Caminhos
 INPUT_DIR = "data/input"
