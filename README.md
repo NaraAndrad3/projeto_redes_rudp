@@ -2,58 +2,96 @@
 
 ## Descrição
 
-Projeto desenvolvido para a disciplina de Redes de Computadores do Programa de Pós-Graduação em Ciência da Computação (PPGCC/UFPI).
+Projeto desenvolvido para a disciplina de Redes de Computadores do Programa de Pós-Graduação em Ciência da Computação (PPGCC) da Universidade Federal do Piauí (UFPI).
 
-O objetivo é implementar e analisar um sistema de transferência de arquivos utilizando:
+O objetivo do projeto é implementar, testar e analisar experimentalmente dois mecanismos de transferência de arquivos:
 
-- TCP tradicional;
-- R-UDP (Reliable UDP) com mecanismo de confiabilidade implementado em nível de aplicação.
+* TCP (Transmission Control Protocol);
+* R-UDP (Reliable UDP), implementado em nível de aplicação utilizando UDP.
 
-Além da implementação, serão realizados experimentos controlados com Docker, simulação de perdas e atrasos de rede utilizando `tc`, captura de tráfego com `tcpdump` e análise estatística dos resultados.
-
----
-
-## Objetivos
-
-### Fase 1 - Implementação Real
-
-- Implementar transferência de arquivos via TCP.
-- Implementar transferência de arquivos via R-UDP.
-- Desenvolver mecanismo de:
-  - numeração de sequência;
-  - ACKs;
-  - timeout;
-  - retransmissão;
-  - validação de integridade.
-- Simular diferentes condições de rede.
-- Capturar tráfego utilizando tcpdump.
-- Comparar métricas da aplicação com métricas observadas na rede.
-
-### Fase 2 - Modelagem Estocástica
-
-- Desenvolver simulador utilizando SimPy.
-- Validar o simulador utilizando os dados obtidos na Fase 1.
-- Comparar resultados simulados e experimentais.
+Além da implementação dos protocolos, foram realizados experimentos controlados utilizando Docker, simulação de condições de rede adversas com NetEm (`tc`), captura de tráfego com `tcpdump`, análise de pacotes com `tshark` e geração de métricas estatísticas para comparação de desempenho.
 
 ---
 
-## Tecnologias Utilizadas
+# Status do Projeto
 
-- Python 3
-- Docker
-- Ubuntu Linux
-- Sockets TCP
-- Sockets UDP
-- tc (Traffic Control)
-- tcpdump
-- Pandas
-- Plotly
-- SimPy
-- Git/GitHub
+## Fase 1 - Implementação Experimental
+
+✅ Transferência de arquivos via TCP
+
+✅ Transferência de arquivos via R-UDP
+
+✅ Checksum para validação de integridade
+
+✅ Numeração de sequência
+
+✅ ACKs cumulativos
+
+✅ Timeout e retransmissão
+
+✅ Janela deslizante (Go-Back-N)
+
+✅ Simulação de atraso e perda de pacotes
+
+✅ Captura de tráfego utilizando tcpdump
+
+✅ Extração de métricas com tshark
+
+✅ Análise estatística dos resultados
+
+✅ Relatório experimental concluído
+
+## Fase 2 - Modelagem Estocástica
+
+🚧 Em desenvolvimento
+
+* Simulação utilizando SimPy
+* Modelagem do sistema de transmissão
+* Validação dos resultados experimentais
+* Comparação entre modelo e implementação real
 
 ---
 
-## Estrutura do Projeto
+# Objetivos
+
+## Fase 1 - Implementação Real
+
+* Implementar transferência de arquivos utilizando TCP.
+* Implementar transferência de arquivos utilizando R-UDP.
+* Desenvolver mecanismos de confiabilidade em nível de aplicação.
+* Simular diferentes condições de rede.
+* Capturar e analisar o tráfego gerado.
+* Comparar métricas da aplicação com métricas observadas na rede.
+
+## Fase 2 - Modelagem Estocástica
+
+* Desenvolver um simulador utilizando SimPy.
+* Modelar os protocolos implementados.
+* Validar o simulador utilizando os dados experimentais.
+* Comparar os resultados simulados e reais.
+
+---
+
+# Tecnologias Utilizadas
+
+* Python 3
+* Docker
+* Docker Compose
+* Ubuntu Linux
+* Sockets TCP
+* Sockets UDP
+* NetEm (`tc`)
+* tcpdump
+* tshark (Wireshark)
+* Pandas
+* Plotly
+* SimPy
+* Jupyter Notebook / Google Colab
+* Git e GitHub
+
+---
+
+# Estrutura do Projeto
 
 ```text
 projeto-redes-rudp/
@@ -71,7 +109,6 @@ projeto-redes-rudp/
 │   ├── input/
 │   └── output/
 │
-├── logs/
 │
 ├── captures/
 │
@@ -84,7 +121,9 @@ projeto-redes-rudp/
 └── .gitignore
 ```
 
-## Arquitetura Geral
+---
+
+# Arquitetura Geral
 
 ```text
 Cliente
@@ -102,86 +141,304 @@ Arquivo Recebido
           │
           ▼
 
-tcpdump → PCAP → CSV → Análise Estatística
+tcpdump → PCAP → CSV → Análise Estatística → Gráficos
 ```
 
 ---
 
-## Cenários de Teste
+# Pré-requisitos
 
-### Cenário A
+Antes de executar o projeto, certifique-se de possuir instalado:
 
-- Perda: 0%
-- Delay: 10 ms
+* Python 3.10 ou superior
+* Docker
+* Docker Compose
+* Git
+* tcpdump
+* tshark (Wireshark)
 
-### Cenário B
+Verifique as versões instaladas:
 
-- Perda: 10%
-- Delay: 50 ms
-
-### Cenário C
-
-- Perda: 20%
-- Delay: 100 ms
-
----
-
-## Métricas Avaliadas
-
-- Tempo total de transferência
-- Throughput
-- RTT
-- Taxa de retransmissão
-- Perda de pacotes
-- Vazão efetiva
+```bash
+python --version
+docker --version
+docker compose version
+tshark -v
+```
 
 ---
 
-## Roadmap da implementaçao do projeto
+# Instalação
 
-### Ambiente
+Clone o repositório:
 
-- [x] Criação do repositório
-- [x] Estrutura inicial de diretórios
-- [ ] Configuração Docker
-- [ ] Configuração da rede virtual
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd projeto-redes-rudp
+```
 
-### Implementação TCP
+Crie um ambiente virtual:
 
-- [ ] Servidor TCP
-- [ ] Cliente TCP
-- [ ] Transferência de arquivos
+```bash
+python -m venv .venv
+```
 
-### Implementação R-UDP
+Ative o ambiente:
 
-- [ ] Estrutura de pacotes
-- [ ] Checksum
-- [ ] ACKs
-- [ ] Timeout
-- [ ] Retransmissão
-- [ ] Janela deslizante (Go-Back-N)
+### Linux
 
-### Testes
+```bash
+source .venv/bin/activate
+```
 
-- [ ] Cenário A
-- [ ] Cenário B
-- [ ] Cenário C
+### Windows (PowerShell)
 
-### Captura e análise
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-- [ ] tcpdump
-- [ ] Exportação CSV
-- [ ] Geração de gráficos
+Instale as dependências:
 
-### Simulação
+```bash
+pip install -r requirements.txt
+```
 
-- [ ] Modelagem em SimPy
-- [ ] Validação cruzada
+---
 
-## Autor
+# Inicialização dos Containers
 
-Nara Raquel Dias Andrade
+Na raiz do projeto:
+
+```bash
+docker compose up --build -d
+```
+
+Verifique os containers:
+
+```bash
+docker ps
+```
+
+Acessar o cliente:
+
+```bash
+docker exec -it redes_client bash
+```
+
+Acessar o servidor:
+
+```bash
+docker exec -it redes_server bash
+```
+
+---
+
+# Execução do TCP
+
+## Servidor
+
+```bash
+docker exec -it redes_server bash
+
+python3 -m src.server.tcp_server
+```
+
+## Cliente
+
+```bash
+docker exec -it redes_client bash
+
+python3 -m src.client.tcp_client
+```
+
+---
+
+# Execução do R-UDP
+
+## Servidor
+
+```bash
+docker exec -it redes_server bash
+
+python3 -m src.server.rudp_server
+```
+
+## Cliente
+
+```bash
+docker exec -it redes_client bash
+
+python3 -m src.client.rudp_client
+```
+
+---
+
+# Simulação dos Cenários de Rede
+
+Os cenários são configurados utilizando NetEm.
+
+## Cenário A
+
+```bash
+tc qdisc replace dev eth0 root netem delay 10ms loss 0%
+```
+
+## Cenário B
+
+```bash
+tc qdisc replace dev eth0 root netem delay 50ms loss 10%
+```
+
+## Cenário C
+
+```bash
+tc qdisc replace dev eth0 root netem delay 100ms loss 20%
+```
+
+Verificar configuração:
+
+```bash
+tc qdisc show dev eth0
+```
+
+Remover configuração:
+
+```bash
+tc qdisc del dev eth0 root
+```
+
+---
+
+# Captura de Tráfego
+
+Iniciar captura:
+
+```bash
+tcpdump -i any -w captures/teste.pcap
+```
+
+Encerrar captura:
+
+```text
+CTRL + C
+```
+
+---
+
+# Execução Automatizada dos Experimentos
+
+O script principal executa:
+
+* TCP e R-UDP;
+* Cenários A, B e C;
+* Cinco repetições por cenário;
+* Captura automática dos arquivos PCAP;
+* Consolidação dos resultados em CSV.
+
+Execução:
+
+```bash
+python scripts/run_all.py
+```
+
+---
+
+# Cenários Avaliados
+
+| Cenário | Delay  | Perda |
+| ------- | ------ | ----- |
+| A       | 10 ms  | 0 %   |
+| B       | 50 ms  | 10 %  |
+| C       | 100 ms | 20 %  |
+
+---
+
+# Métricas Avaliadas
+
+## Aplicação
+
+* Throughput da aplicação
+* Tempo total de transferência
+* Taxa de entrega
+* Número de retransmissões
+
+## Rede
+
+* Throughput observado
+* Quantidade de pacotes
+* Volume total trafegado
+* Overhead de rede
+
+---
+
+# Extração de Métricas dos PCAPs
+
+Após executar os experimentos:
+
+```bash
+python scripts/extract_pcap_metrics.py
+```
+
+O script gera um arquivo CSV contendo:
+
+* Quantidade de pacotes;
+* Volume total de bytes;
+* Duração da captura;
+* Throughput observado na rede.
+
+---
+
+# Reprodução da Análise
+
+Os gráficos e tabelas do relatório podem ser reproduzidos utilizando os notebooks localizados em:
+
+```text
+analysis/
+```
+
+Os notebooks podem ser executados:
+
+* Localmente via Jupyter Notebook;
+* No Visual Studio Code;
+* No Google Colab.
+
+Os gráficos gerados são armazenados em:
+
+```text
+results/figures/
+```
+
+---
+
+# Resultados Obtidos
+
+As análises realizadas incluem:
+
+* Throughput médio da aplicação;
+* Tempo médio de transferência;
+* Retransmissões do protocolo R-UDP;
+* Overhead observado na rede;
+* Quantidade de pacotes capturados;
+* Throughput observado na rede;
+* Comparação entre métricas da aplicação e da rede.
+
+---
+
+# Referências
+
+* RFC 768 - User Datagram Protocol (UDP)
+* RFC 793 - Transmission Control Protocol (TCP)
+* Tanenbaum, A. S.; Wetherall, D. Computer Networks.
+* Kurose, J. F.; Ross, K. W. Computer Networking: A Top-Down Approach.
+
+---
+
+# Autor
+
+**Nara Raquel Dias Andrade**
 
 Programa de Pós-Graduação em Ciência da Computação (PPGCC)
 
-Universidade Federal do Piauí
+Universidade Federal do Piauí (UFPI)
+
+Teresina - PI - Brasil
