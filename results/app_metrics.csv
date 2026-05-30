@@ -1,0 +1,17 @@
+1,A,TCP,test_512kb.bin,10,0,success,524288,524288,0.0712,7366887.4,,captures/tcp_scenario_a_run_1.pcap,captures/tcp_scenario_a_run_1.csv
+1,A,RUDP,test_512kb.bin,10,0,success,524288,524288,1.5723,333457.82,0,captures/rudp_scenario_a_run_1.pcap,captures/rudp_scenario_a_run_1.csv
+1,B,TCP,test_512kb.bin,50,10,success,524288,524288,5.39,97269.98,,captures/tcp_scenario_b_run_1.pcap,captures/tcp_scenario_b_run_1.csv
+1,B,RUDP,test_512kb.bin,50,10,success,524288,524288,71.9551,7286.32,244,captures/rudp_scenario_b_run_1.pcap,captures/rudp_scenario_b_run_1.csv
+1,C,TCP,test_512kb.bin,100,20,success,524288,524288,16.3923,31983.85,,captures/tcp_scenario_c_run_1.pcap,captures/tcp_scenario_c_run_1.csv
+1,C,RUDP,test_512kb.bin,100,20,partial_failure,524288,520192,171.5867,3055.53,557,captures/rudp_scenario_c_run_1.pcap,captures/rudp_scenario_c_run_1.csv
+2,A,TCP,test_512kb.bin,10,0,success,524288,524288,0.0537,9771004.8,,captures/tcp_scenario_a_run_2.pcap,captures/tcp_scenario_a_run_2.csv
+2,A,RUDP,test_512kb.bin,10,0,failure,524288,0,0.0294,17837631.86,0,captures/rudp_scenario_a_run_2.pcap,captures/rudp_scenario_a_run_2.csv
+2,B,TCP,test_512kb.bin,50,10,success,524288,524288,2.4147,217124.8,,captures/tcp_scenario_b_run_2.pcap,captures/tcp_scenario_b_run_2.csv
+2,B,RUDP,test_512kb.bin,50,10,success,524288,524288,58.4986,8962.41,192,captures/rudp_scenario_b_run_2.pcap,captures/rudp_scenario_b_run_2.csv
+2,C,TCP,test_512kb.bin,100,20,partial_failure,524288,507950,28.647,18301.66,,captures/tcp_scenario_c_run_2.pcap,captures/tcp_scenario_c_run_2.csv
+2,C,RUDP,test_512kb.bin,100,20,success,524288,524288,162.8342,3219.77,528,captures/rudp_scenario_c_run_2.pcap,captures/rudp_scenario_c_run_2.csv
+3,A,TCP,test_512kb.bin,10,0,success,524288,524288,0.0502,10441210.08,,captures/tcp_scenario_a_run_3.pcap,captures/tcp_scenario_a_run_3.csv
+3,A,RUDP,test_512kb.bin,10,0,success,524288,524288,1.551,338037.88,0,captures/rudp_scenario_a_run_3.pcap,captures/rudp_scenario_a_run_3.csv
+3,B,TCP,test_512kb.bin,50,10,success,524288,524288,2.2675,231223.3,,captures/tcp_scenario_b_run_3.pcap,captures/tcp_scenario_b_run_3.csv
+3,B,RUDP,test_512kb.bin,50,10,success,524288,524288,76.3041,6871.03,257,captures/rudp_scenario_b_run_3.pcap,captures/rudp_scenario_b_run_3.csv
+3,C,TCP,test_512kb.bin,100,20,partial_failure,524288,454622,18.7232,28002.01,,captures/tcp_scenario_c_run_3.pcap,captures/tcp_scenario_c_run_3.csv
