@@ -78,10 +78,10 @@ def main():
 
     if protocol == "tcp":
         server_command = "python3 -m src.server.tcp_server"
-        client_command = "python3 -m src.client.tcp_client"
+        client_command = ("python3 -m src.client.tcp_client test_1mb.bin")
     else:
         server_command = "python3 -m src.server.rudp_server"
-        client_command = "python3 -m src.client.rudp_client"
+        client_command = ("python3 -m src.client.rudp_client test_1mb.bin")
 
     server_process = docker_exec(
         "redes_server",

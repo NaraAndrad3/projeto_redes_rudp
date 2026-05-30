@@ -1,20 +1,59 @@
 Cenário A 
+    1MB
     - TCP:
-        [TCP CLIENT] Bytes enviados: 29
-        [TCP CLIENT] Tempo total: 0.0056 s
-        [TCP CLIENT] Throughput: 5169.57 B/s
+        [TCP CLIENT] Arquivo: test_1mb.bin
+        [TCP CLIENT] Bytes enviados: 1048576
+        [TCP CLIENT] Tempo total: 0.1414 s
+        [TCP CLIENT] Throughput: 7414166.52 B/s
+        [TCP CLIENT] Retransmissões: N/A
     
     -RUDP:
-        [R-UDP CLIENT] Pacote de metadados enviado.
-        [R-UDP CLIENT] ACK de metadados recebido.
-        [R-UDP CLIENT] Pacote 0 enviado.
-        [R-UDP CLIENT] ACK 0 recebido.
-        [R-UDP CLIENT] Transmissão finalizada.
-        [R-UDP CLIENT] Arquivo: test.txt
-        [R-UDP CLIENT] Bytes úteis enviados: 29
-        [R-UDP CLIENT] Tempo total: 0.0290 s
-        [R-UDP CLIENT] Throughput útil: 999.22 B/s
-        [R-UDP CLIENT] Retransmissões: 0
+        [R-UDP CLIENT] Transmissões finalizada.
+        [R-UDP CLIENT] Arquivo: test_1mb.bin
+        [R-UDP CLIENT] Bytes úteis enviados: 1048576
+        [R-UDP CLIENT] Tempo total: 3.1039 s
+        [R-UDP CLIENT] Throughput útil: 337825.63 B/s
+        [R-UDP CLIENT] RetransmissÃµes: 0
+        
+
+Cenário B:
+    1MB
+    TCP:
+        [TCP CLIENT] Arquivo enviado com sucesso.
+        [TCP CLIENT] Arquivo: test_1mb.bin
+        [TCP CLIENT] Bytes enviados: 1048576
+        [TCP CLIENT] Tempo total: 6.4784 s
+        [TCP CLIENT] Throughput: 161857.26 B/s
+        [TCP CLIENT] Retransmissões: N/A
+
+    RUDP:
+        [R-UDP CLIENT] TransmissÃ£o finalizada.
+        [R-UDP CLIENT] Arquivo: test_1mb.bin
+        [R-UDP CLIENT] Bytes úteis enviados: 1048576
+        [R-UDP CLIENT] Tempo total: 42.6833 s
+        [R-UDP CLIENT] Throughput útil: 24566.44 B/s
+        [R-UDP CLIENT] Retransmisses: 128
+
+
+Cenário C:
+    1MB
+    TCP:
+        [TCP CLIENT] Arquivo: test_1mb.bin
+        [TCP CLIENT] Bytes enviados: 1048576
+        [TCP CLIENT] Tempo total: 39.2887 s
+        [TCP CLIENT] Throughput: 26688.97 B/s
+        [TCP CLIENT] Retransmissões: N/A
+
+    RUDP:
+        [R-UDP CLIENT] NÃºmero mÃ¡ximo de tentativas atingido. Encerrando conexÃ£o.
+        [R-UDP CLIENT] Transmissões finalizada.
+        [R-UDP CLIENT] Arquivo: test_1mb.bin
+        [R-UDP CLIENT] Bytes úteis enviados: 1048576
+        [R-UDP CLIENT] Tempo total: 108.2709 s
+        [R-UDP CLIENT] Throughput útil: 9684.74 B/s
+        [R-UDP CLIENT] Retransmissões: 288
+
+
 
 
 

@@ -35,7 +35,7 @@ BUFFER_SIZE = 4096
 """
 WINDOW_SIZE = 4
 TIMEOUT = 1.0
-MAX_RETRIES = 20
+MAX_RETRIES = 100
 
 """
     Configurações de autenticação personalizada. O valor de CUSTOM_AUTH é usado como um token de autenticação

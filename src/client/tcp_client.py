@@ -1,4 +1,4 @@
-import os
+import os, sys
 import socket
 import time
 import struct
@@ -63,4 +63,10 @@ def start_tcp_client(filename: str):
     client_socket.close()
 
 if __name__ == "__main__":
-    start_tcp_client("test.txt")
+    if len(sys.argv) != 2:
+        print(
+            "Uso: python3 -m src.client.tcp_client <arquivo>"
+        )
+        sys.exit(1)
+
+    start_tcp_client(sys.argv[1])

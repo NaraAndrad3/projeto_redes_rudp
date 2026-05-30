@@ -1,4 +1,4 @@
-import os, socket, time, json
+import os, socket, time, json, sys
 from src.common.config import SERVER_DOCKER_NAME, SERVER_PORT_UDP, CHUNK_SIZE, TIMEOUT, MAX_RETRIES, INPUT_DIR, TIMEOUT, WINDOW_SIZE, CUSTOM_AUTH
 from src.common.packet import Packet, ACK, PACKET_TYPE_DATA, PACKET_TYPE_METADATA, PACKET_TYPE_END
 
@@ -26,6 +26,9 @@ def create_packets(file_path: str):
 def start_udp_client(filename: str):
     file_path = os.path.join(INPUT_DIR, filename)
     packets = create_packets(file_path)
+    print(
+    f"[R-UDP CLIENT] Total de pacotes: {len(packets)}"
+    )
     
     metadata = {
     "filename": filename,
@@ -131,4 +134,10 @@ def start_udp_client(filename: str):
 
 if __name__ == "__main__":
 
-    start_udp_client('test.txt')
+    if len(sys.argv) != 2:
+        print(
+            "Uso: python3 -m src.client.rudp_client <arquivo>"
+        )
+        sys.exit(1)
+
+    start_udp_client(sys.argv[1])
