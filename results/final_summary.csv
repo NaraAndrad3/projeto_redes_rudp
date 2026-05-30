@@ -1,0 +1,7 @@
+scenario,protocol,throughput_mean,throughput_std,time_mean,time_std,retrans_mean,retrans_std
+A,RUDP,337097.75,1322.41,1.56,0.01,0.0,0.0
+A,TCP,9346582.29,1225946.1,0.06,0.01,,
+B,RUDP,8426.51,902.13,62.8,6.8,208.0,24.3
+B,TCP,442415.78,563368.53,2.88,2.48,,
+C,RUDP,3311.39,305.38,159.4,14.6,515.0,50.69
+C,TCP,31874.02,7229.21,17.12,3.79,,
