@@ -173,7 +173,7 @@ tshark -v
 Clone o repositório:
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/NaraAndrad3/projeto_redes_rudp.git
 cd projeto-redes-rudp
 ```
 
