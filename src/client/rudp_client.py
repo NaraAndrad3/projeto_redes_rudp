@@ -31,10 +31,10 @@ def start_udp_client(filename: str):
     )
     
     metadata = {
-    "filename": filename,
-    "file_size": os.path.getsize(file_path),
-    "custom_auth": CUSTOM_AUTH
-}
+        "filename": filename,
+        "file_size": os.path.getsize(file_path),
+        "custom_auth": CUSTOM_AUTH
+    }
 
     metadata_payload = json.dumps(metadata).encode("utf-8")
 
