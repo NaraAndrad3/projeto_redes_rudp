@@ -1,30 +1,82 @@
 import random
 import simpy
 
-from simulation.config import (
+from simulacao.config import (
     FILE_SIZE_BYTES,
+    CHUNK_SIZE_BYTES,
+    WINDOW_SIZE,
+    TIMEOUT,
+    MAX_RETRIES,
     SCENARIOS,
     RANDOM_SEED
 )
 
-from simulation.metrics import SimulationMetrics
-from simulation.network import SimulatedNetwork
-from simulation.sender import Sender
-from simulation.receiver import Receiver
+from simulacao.metrics import SimulationMetrics
+from simulacao.network import SimulatedNetwork
+from simulacao.sender import Sender
+from simulacao.receiver import Receiver
 
 
-def run_simulation(scenario_name: str):
+def run_simulation(
+    scenario_name: str,
+    seed: int | None = None,
+    file_size_bytes: int | None = None,
+    chunk_size_bytes: int | None = None,
+    window_size: int | None = None,
+    timeout: float | None = None,
+    max_retries: int | None = None,
+    delay_std_ms: float | None = None
+):
     """
-    Executa uma simulação para um cenário específico.
+    Executa uma simulação completa do protocolo R-UDP.
+
+    Todos os parâmetros podem ser sobrescritos, permitindo executar
+    diferentes experimentos sem modificar o código-fonte.
     """
 
-    random.seed(RANDOM_SEED)
+    # -----------------------------
+    # Seed
+    # -----------------------------
+
+    if seed is None:
+        random.seed(RANDOM_SEED)
+    else:
+        random.seed(seed)
+
+    # -----------------------------
+    # Cenário
+    # -----------------------------
 
     scenario = SCENARIOS[scenario_name]
 
     delay_mean_ms = scenario["delay_ms"]
-    delay_std_ms = delay_mean_ms * 0.10
     loss_probability = scenario["loss_probability"]
+
+    # -----------------------------
+    # Parâmetros (default)
+    # -----------------------------
+
+    if file_size_bytes is None:
+        file_size_bytes = FILE_SIZE_BYTES
+
+    if chunk_size_bytes is None:
+        chunk_size_bytes = CHUNK_SIZE_BYTES
+
+    if window_size is None:
+        window_size = WINDOW_SIZE
+
+    if timeout is None:
+        timeout = TIMEOUT
+
+    if max_retries is None:
+        max_retries = MAX_RETRIES
+
+    if delay_std_ms is None:
+        delay_std_ms = 0.0
+
+    # -----------------------------
+    # Ambiente SimPy
+    # -----------------------------
 
     env = simpy.Environment()
 
@@ -42,7 +94,11 @@ def run_simulation(scenario_name: str):
         env=env,
         network=network,
         metrics=metrics,
-        file_size_bytes=FILE_SIZE_BYTES
+        file_size_bytes=file_size_bytes,
+        chunk_size_bytes=chunk_size_bytes,
+        window_size=window_size,
+        timeout=timeout,
+        max_retries=max_retries
     )
 
     receiver = Receiver(
@@ -56,18 +112,19 @@ def run_simulation(scenario_name: str):
         receiver=receiver
     )
 
-    env.process(
-        sender.run()
-    )
+    env.process(sender.run())
 
     env.run()
 
     return metrics
 
 
-def print_results(scenario_name: str, metrics: SimulationMetrics):
+def print_results(
+    scenario_name: str,
+    metrics: SimulationMetrics
+):
     """
-    Exibe as principais métricas da simulação.
+    Exibe um resumo das métricas da simulação.
     """
 
     print("=" * 60)
@@ -96,6 +153,24 @@ def print_results(scenario_name: str, metrics: SimulationMetrics):
     print(f"Eficiência: {metrics.efficiency_ratio:.4f}")
 
 
+def main():
+    """
+    Executa os três cenários básicos.
+    """
+
+    for scenario in ["A", "B", "C"]:
+
+        metrics = run_simulation(
+            scenario_name=scenario
+        )
+
+        print_results(
+            scenario_name=scenario,
+            metrics=metrics
+        )
+
+        print()
+
+
 if __name__ == "__main__":
-    metrics = run_simulation("A")
-    print_results("A", metrics)
+    main()

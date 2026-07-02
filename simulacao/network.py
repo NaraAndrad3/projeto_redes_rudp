@@ -1,22 +1,15 @@
 import random
 import simpy
 
-from simulation.packet import (
-    PACKET_TYPE_DATA,
-    PACKET_TYPE_ACK
-)
-
 
 class SimulatedNetwork:
     """
     Representa a rede simulada.
 
-    Este componente é responsável por aplicar:
-    - atraso;
-    - jitter;
-    - perda de pacotes;
-    - entrega de pacotes DATA ao receptor;
-    - entrega de pacotes ACK ao emissor.
+    Aplica atraso, jitter e perda de pacotes.
+    Também preserva a ordem de entrega dentro de cada direção:
+    - DATA: emissor -> receptor
+    - ACK: receptor -> emissor
     """
 
     def __init__(
@@ -36,21 +29,15 @@ class SimulatedNetwork:
         self.sender = None
         self.receiver = None
 
+        # Controlam o próximo instante possível de entrega em cada direção.
+        self.next_data_delivery_time = 0.0
+        self.next_ack_delivery_time = 0.0
+
     def connect(self, sender, receiver):
-        """
-        Conecta emissor e receptor à rede simulada.
-        """
         self.sender = sender
         self.receiver = receiver
 
     def sample_delay(self) -> float:
-        """
-        Gera uma amostra de atraso em segundos.
-
-        O atraso segue uma distribuição normal.
-        Caso o valor sorteado seja negativo, ele é limitado a zero.
-        """
-
         delay_ms = random.normalvariate(
             self.delay_mean_ms,
             self.delay_std_ms
@@ -61,59 +48,58 @@ class SimulatedNetwork:
         return delay_ms / 1000.0
 
     def is_lost(self) -> bool:
-        """
-        Decide se um pacote será perdido.
-
-        A perda segue um modelo de Bernoulli:
-        - sorteia um número entre 0 e 1;
-        - se esse número for menor que a probabilidade de perda,
-          o pacote é descartado.
-        """
-
         return random.random() < self.loss_probability
 
     def send_data(self, packet):
-        """
-        Envia um pacote DATA do emissor para o receptor.
-        """
         return self.env.process(
             self._deliver_data(packet)
         )
 
     def send_ack(self, packet):
-        """
-        Envia um pacote ACK do receptor para o emissor.
-        """
         return self.env.process(
             self._deliver_ack(packet)
         )
 
     def _deliver_data(self, packet):
-        """
-        Processo SimPy responsável por entregar um pacote de dados.
-        """
-
         if self.is_lost():
             self.metrics.register_data_loss()
             return
 
         delay = self.sample_delay()
 
-        yield self.env.timeout(delay)
+        planned_delivery_time = self.env.now + delay
+
+        delivery_time = max(
+            planned_delivery_time,
+            self.next_data_delivery_time
+        )
+
+        self.next_data_delivery_time = delivery_time
+
+        yield self.env.timeout(
+            delivery_time - self.env.now
+        )
 
         self.receiver.receive(packet)
 
     def _deliver_ack(self, packet):
-        """
-        Processo SimPy responsável por entregar um ACK.
-        """
-
         if self.is_lost():
             self.metrics.register_ack_loss()
             return
 
         delay = self.sample_delay()
 
-        yield self.env.timeout(delay)
+        planned_delivery_time = self.env.now + delay
+
+        delivery_time = max(
+            planned_delivery_time,
+            self.next_ack_delivery_time
+        )
+
+        self.next_ack_delivery_time = delivery_time
+
+        yield self.env.timeout(
+            delivery_time - self.env.now
+        )
 
         self.sender.receive_ack(packet)
